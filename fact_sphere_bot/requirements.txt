@@ -1,4 +1,4 @@
 requests
 bs4
-discord
+discord.py
 python-dotenv
