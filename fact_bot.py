@@ -101,7 +101,7 @@ async def fetchposts(c, sub, sort, post_count):
         await c.channel.send(msg)
 
 async def help(c):
-    c.channel.send("!fact gives you one quote of dubious accuracy from the Fact Sphere." + 
+    await c.channel.send("!fact gives you one quote of dubious accuracy from the Fact Sphere." + 
     "!moarfacts x gives you (x) number of facts" +
     "!fetchposts will get you posts from reddit. Pass in the name of a subreddit" + 
     "the way you want to get the posts, and how many posts you want to see" +
