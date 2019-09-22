@@ -100,11 +100,11 @@ async def fetchposts(c, sub, sort, post_count):
     else:
         await c.channel.send(msg)
 
-async def help(c):
+async def onionhelp(c):
     await c.channel.send("!fact gives you one quote of dubious accuracy from the Fact Sphere." + 
     "!moarfacts x gives you (x) number of facts" +
     "!fetchposts will get you posts from reddit. Pass in the name of a subreddit" + 
-    "the way you want to get the posts, and how many posts you want to see" +
+    "the way you want to get the posts[new,hot,top,contro,gilded], and how many posts you want to see" +
     "Please note that the reddit API only allows requests every 20 seconds or so" +
     "!heart will say 'i (heart) you username!'")
 
