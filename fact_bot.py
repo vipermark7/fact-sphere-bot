@@ -99,7 +99,8 @@ async def fetchposts(c, sub, sort, post_count):
 
     else:
         await c.channel.send(msg)
-
+        
+@client.command(pass_context=True)
 async def onionhelp(c):
     await c.channel.send("!fact gives you one quote of dubious accuracy from the Fact Sphere." + 
     "!moarfacts x gives you (x) number of facts" +
