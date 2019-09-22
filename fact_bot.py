@@ -97,7 +97,8 @@ async def fetchposts(c, sub, sort, post_count):
         for i in longMsg: 
             await c.channel.send(i)
 
-    await c.channel.send(msg)
+    else:
+        await c.channel.send(msg)
 
 async def help(c):
     c.channel.send("!fact gives you one quote of dubious accuracy from the Fact Sphere." + 
