@@ -61,7 +61,7 @@ async def moarfacts(c, times):
     await c.channel.send(msg)
 
 @client.command(pass_context=True)
-async def fetchposts(sub, sort, post_count):
+async def fetchposts(c, sub, sort, post_count):
     msg = ""
     posts = reddit.subreddit(sub).new(limit=int(post_count))
     for p in posts:
@@ -70,5 +70,5 @@ async def fetchposts(sub, sort, post_count):
     # if 'top' in sort:
     # if 'controversial in sort':
     # if 'gilded' in sort:
-    print(msg)
+    await c.channel.send(msg)
 client.run(token)
