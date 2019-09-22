@@ -95,9 +95,9 @@ async def fetchposts(c, sub, sort, post_count):
     if len(msg) > 2000:
         longMsg = wrap(msg, 2000)
         for i in longMsg: 
-            c.channel.send(i)
+            await c.channel.send(i)
 
-    c.channel.send(msg)
+    await c.channel.send(msg)
 
 async def help(c):
     c.channel.send("!fact gives you one quote of dubious accuracy from the Fact Sphere." + 
