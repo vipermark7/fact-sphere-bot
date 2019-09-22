@@ -1,6 +1,7 @@
 import os, random, sys, praw, discord
 from dotenv import load_dotenv
 from discord.ext import commands
+from textwrap import wrap
 
 load_dotenv()
 token = os.getenv('DISCORD_TOKEN')
@@ -42,6 +43,7 @@ async def fact(c):
     facts_list = [line.split() for line in facts]
     fact_arr = random.choice(facts_list)
     fact = ' '.join(fact_arr)
+
     await c.channel.send(fact)
 
 @client.command(pass_context=True)
@@ -54,21 +56,56 @@ async def moarfacts(c, times):
     msg = ""
     facts = open("parsedfacts.txt", "r")
     fact_list = []
+
     for line in facts:
         fact_list.append(line)
+
     for i in range(int(times)):
         msg += random.choice(fact_list) + '\n'
+
     await c.channel.send(msg)
 
 @client.command(pass_context=True)
 async def fetchposts(c, sub, sort, post_count):
     msg = ""
-    posts = reddit.subreddit(sub).new(limit=int(post_count))
+    # longMsg is an array that will hold a bunch of strings that represent a
+    # message that is broken up into pieces because it is over 2000 chars 
+    # in length
+    longMsg = []
+    sub = reddit.subreddit(sub)
+
+    if 'new' in sort: 
+        posts = sub.new(limit=int(post_count))
+
+    if 'hot' in sort:
+        posts = sub.hot(limit=int(post_count))
+
+    if 'top' in sort:
+        posts = sub.new(limit=int(post_count))
+
+    if 'contro' in sort:
+        posts = sub.controversial(limit=int(post_count))
+
+    if 'gilded' in sort:
+        posts = sub.gilded(limit=int(post_count))
+
     for p in posts:
         msg += "Title: " + p.title + '\n' "Body: " + p.selftext + '\n'
-    # if 'hot' in sort  :
-    # if 'top' in sort:
-    # if 'controversial in sort':
-    # if 'gilded' in sort:
-    await c.channel.send(msg)
+
+    if len(msg) > 2000:
+        longMsg = wrap(msg, 2000)
+        for i in longMsg: 
+            c.channel.send(i)
+
+    c.channel.send(msg)
+
+async def help(c):
+    c.channel.send("!fact gives you one quote of dubious accuracy from the Fact Sphere." + 
+    "!moarfacts x gives you (x) number of facts" +
+    "!fetchposts will get you posts from reddit. Pass in the name of a subreddit" + 
+    "the way you want to get the posts, and how many posts you want to see" +
+    "Please note that the reddit API only allows requests every 20 seconds or so" +
+    "!heart will say 'i (heart) you username!'")
+
+
 client.run(token)
