@@ -1,12 +1,20 @@
-import os, random, sys
+import os, random, sys, praw, discord
 from dotenv import load_dotenv
-
-# Import discord libary
-import discord
 from discord.ext import commands
 
 load_dotenv()
 token = os.getenv('DISCORD_TOKEN')
+redditSecret = os.getenv('REDDIT_CLIENT_SECRET')
+redditID = os.getenv('REDDIT_CLIENT_ID')
+redditAgent = os.getenv('REDDIT_USER_AGENT')
+redditPW = os.getenv('REDDIT_PW')
+redditUName = os.getenv('REDDIT_USERNAME')
+reddit = praw.Reddit(client_id=redditID,
+                     client_secret=redditSecret,
+                     user_agent=redditAgent,
+                     username=redditUName,
+                     password=redditPW)
+
 # Discord client
 client = commands.Bot(command_prefix='!') # !COMMAND_NAME args
 
@@ -52,5 +60,15 @@ async def moarfacts(c, times):
         msg += random.choice(fact_list) + '\n'
     await c.channel.send(msg)
 
-# Login bot to Discord
+@client.command(pass_context=True)
+async def fetchposts(sub, sort, post_count):
+    msg = ""
+    posts = reddit.subreddit(sub).new(limit=int(post_count))
+    for p in posts:
+        msg += "Title: " + p.title + '\n' "Body: " + p.selftext + '\n'
+    # if 'hot' in sort  :
+    # if 'top' in sort:
+    # if 'controversial in sort':
+    # if 'gilded' in sort:
+    print(msg)
 client.run(token)
