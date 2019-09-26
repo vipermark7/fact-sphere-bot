@@ -122,5 +122,7 @@ async def summon(c):
         longMsg = wrap(msg, 2000)
         for i in longMsg: 
             await c.channel.send(i)
+    else:
+        await c.channel.send(msg)
             
 client.run(token)
