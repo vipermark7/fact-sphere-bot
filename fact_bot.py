@@ -90,7 +90,7 @@ async def fetchposts(c, sub, sort, post_count):
         posts = sub.gilded(limit=int(post_count))
 
     for p in posts:
-        msg += "Title: " + p.title + '\n' "Body: " + p.selftext + '\n'
+        msg += "**" + p.title + "**" + '\n' "Body: " + p.selftext + '\n'
 
     if len(msg) > 2000:
         longMsg = wrap(msg, 2000)
@@ -102,12 +102,25 @@ async def fetchposts(c, sub, sort, post_count):
         
 @client.command(pass_context=True)
 async def onionhelp(c):
-    await c.channel.send("!fact gives you one quote of dubious accuracy from the Fact Sphere." + 
-    "!moarfacts x gives you (x) number of facts" +
-    "!fetchposts will get you posts from reddit. Pass in the name of a subreddit" + 
-    "the way you want to get the posts[new,hot,top,contro,gilded], and how many posts you want to see" +
-    "Please note that the reddit API only allows requests every 20 seconds or so" +
-    "!heart will say 'i (heart) you username!'")
+    await c.channel.send("!fact gives you one quote of dubious accuracy from the Fact Sphere" + '\n' +
+    "!moarfacts x gives you (x) number of facts" + '\n' +
+    "!fetchposts will get you posts from reddit. Pass in the name of a subreddit" + '\n' +
+    "the way you want to get the posts[new,hot,top,contro,gilded], and how many posts you want to see" + '\n' +
+    "Please note that the reddit API only allows requests every 20 seconds or so" + '\n' +
+    "!heart will say 'i (heart) you username!'" + '\n' + 
+    "!summon gets posts from the SummonSign subreddit to see if any PC Dark Souls 3 players need help")
 
+@client.command(pass_context=True)
+async def summon(c):
+    posts = reddit.subreddit("summonsign").new(limit=150)
+    msg = ""
+    for p in posts:
+        if "pc" in p.title.lower() and "ds3" in p.title.lower():
+            msg += "**" + p.title + "**" + '\n'
 
+    if len(msg) > 2000:
+        longMsg = wrap(msg, 2000)
+        for i in longMsg: 
+            await c.channel.send(i)
+            
 client.run(token)
