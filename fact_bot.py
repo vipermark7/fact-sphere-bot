@@ -1,7 +1,10 @@
-import os, random, sys, praw, discord
-from dotenv import load_dotenv
-from discord.ext import commands
+import os
+import random
 from textwrap import wrap
+
+import praw
+from discord.ext import commands
+from dotenv import load_dotenv
 
 load_dotenv()
 token = os.getenv('DISCORD_TOKEN')
@@ -17,7 +20,8 @@ reddit = praw.Reddit(client_id=redditID,
                      password=redditPW)
 
 # Discord client
-client = commands.Bot(command_prefix='!') # !COMMAND_NAME args
+client = commands.Bot(command_prefix='!')  # !COMMAND_NAME args
+
 
 # Bot events
 # Function name must equal a valid event name
@@ -28,12 +32,14 @@ async def on_ready():
     # Docs here for client https://discordpy.readthedocs.io/en/async/api.html#client
     print('Logged on as {0}!'.format(client.user.name))
 
+
 # Bot commands
 # Function name is the command name
 @client.command(pass_context=True)
 # c = context.*
 async def ping(c):
-    await c.channel.send('Wadup') 
+    await c.channel.send('Wadup')
+
 
 @client.command(pass_context=True)
 async def fact(c):
@@ -46,9 +52,11 @@ async def fact(c):
 
     await c.channel.send(fact)
 
+
 @client.command(pass_context=True)
 async def heart(c):
     await c.channel.send("i :heart: u {0}! :D".format(c.message.author.name))
+
 
 @client.command(pass_context=True)
 async def moarfacts(c, times):
@@ -65,6 +73,7 @@ async def moarfacts(c, times):
 
     await c.channel.send(msg)
 
+
 @client.command(pass_context=True)
 async def fetchposts(c, sub, sort, post_count):
     msg = ""
@@ -74,7 +83,7 @@ async def fetchposts(c, sub, sort, post_count):
     longMsg = []
     sub = reddit.subreddit(sub)
 
-    if 'new' in sort: 
+    if 'new' in sort:
         posts = sub.new(limit=int(post_count))
 
     if 'hot' in sort:
@@ -94,21 +103,23 @@ async def fetchposts(c, sub, sort, post_count):
 
     if len(msg) > 2000:
         longMsg = wrap(msg, 2000)
-        for i in longMsg: 
+        for i in longMsg:
             await c.channel.send(i)
 
     else:
         await c.channel.send(msg)
-        
+
+
 @client.command(pass_context=True)
 async def onionhelp(c):
     await c.channel.send("!fact gives you one quote of dubious accuracy from the Fact Sphere" + '\n' +
-    "!moarfacts x gives you (x) number of facts" + '\n' +
-    "!fetchposts will get you posts from reddit. Pass in the name of a subreddit" + '\n' +
-    "the way you want to get the posts[new,hot,top,contro,gilded], and how many posts you want to see" + '\n' +
-    "Please note that the reddit API only allows requests every 20 seconds or so" + '\n' +
-    "!heart will say 'i (heart) you username!'" + '\n' + 
-    "!summon gets posts from the SummonSign subreddit to see if any PC Dark Souls 3 players need help")
+                         "!moarfacts x gives you (x) number of facts" + '\n' +
+                         "!fetchposts will get you posts from reddit. Pass in the name of a subreddit" + '\n' +
+                         "the way you want to get the posts[new,hot,top,contro,gilded], and how many posts you want to see" + '\n' +
+                         "Please note that the reddit API only allows requests every 20 seconds or so" + '\n' +
+                         "!heart will say 'i (heart) you username!'" + '\n' +
+                         "!summon gets posts from the SummonSign subreddit to see if any PC Dark Souls 3 players need help")
+
 
 @client.command(pass_context=True)
 async def summon(c):
@@ -120,9 +131,10 @@ async def summon(c):
 
     if len(msg) > 2000:
         longMsg = wrap(msg, 2000)
-        for i in longMsg: 
+        for i in longMsg:
             await c.channel.send(i)
     else:
         await c.channel.send(msg)
-            
+
+
 client.run(token)

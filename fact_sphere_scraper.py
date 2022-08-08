@@ -1,9 +1,8 @@
-import bs4, requests
 from bs4 import BeautifulSoup
 
 # our html is taken from 
 # https://theportalwiki.com/wiki/Core_voice_lines#Fact_core
-html = open("factlist.txt","r")
+html = open("factlist.txt", "r")
 
 # html data becomes "soup" that has been parsed by bs4 
 # that we can now interact with in Python
